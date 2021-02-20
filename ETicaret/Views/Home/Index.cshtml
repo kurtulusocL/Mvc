@@ -1,0 +1,40 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="content">
+    @{
+        Html.RenderAction("Slider", "Home");
+    }
+
+    @{
+        Html.RenderAction("YeniUrunler", "Home");
+    }
+
+    @{
+        Html.RenderAction("Servisler", "Home");
+    }
+
+    @{
+        Html.RenderAction("Modalar", "Home");
+    }
+
+    @{
+        Html.RenderAction("Markalar", "Home");
+    }    
+</div>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>Kullanıcı</th>
+            <th>Ziyaretçi</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>@ViewBag.AktifKullanici</td>
+            <td>@ViewBag.ToplamZiyaretci</td>
+        </tr>
+    </tbody>
+</table>

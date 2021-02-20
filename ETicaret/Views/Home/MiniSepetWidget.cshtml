@@ -1,0 +1,72 @@
+﻿@model ETicaret.Sepet
+
+
+<script src="~/Content/Admin/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function myFuction() {
+        $(".urunSil").click(function UrunSil() {
+            var uId = $(this).attr("name");
+            $.ajax({
+                type: "GET",
+                url: "/Home/SepetUrunAdetDusur",
+                data: { id: uId },
+                success: function myFunction() {
+                    $.ajax({
+                        type: "GET",
+                        url: "/Home/MiniSepetWidget",
+                        success: function myFunction(veri) {
+                            $(".cart-all").html('');
+                            $(".cart-all").html(veri);
+                        }
+                    });
+                },
+                error: function myFunction() {
+                    alert("lütfen sayfayı yenileyiniz");
+                },
+            });
+        });
+    });
+</script>
+
+<div class="cart-all">
+    <i class="icon-19" title="19"></i>
+    @if (Model != null)
+    {
+        @Model.ToplamTutar.ToString("C2");
+    }
+    else
+    {
+        <span>0 ₺</span>
+    }
+    <div class="inside-cart">
+        <p>
+            @if (Model != null)
+            {
+                <span>Sepetteki toplam ürün @Model.Urunler.Sum(i => i.Adet)</span>
+            }
+            else
+            {
+                <span>Sepette ürün yok.</span>
+            }
+        </p>
+        <ul>
+            @if (Model != null)
+            {
+                foreach (var item in Model.Urunler)
+                {
+                    <li>
+                        <div class="inside-cart-image"><img src="~/Content/Zeon/images/photos/image-9.jpg" alt="product name" /></div>
+                        <button class="urunSil" name="@item.Urun.Id">x</button>
+                        @if (Model != null)
+                        {
+                            <a href="~/Home/UrunDetay/@item.Urun.Id">@item.Urun.Adi</a>
+                        }
+
+                        <p>Toplam Tutar: @item.ToplamFiyat.ToString("C2")</p>
+                        <p>Adet: @item.Adet</p>
+                    </li>
+                }
+            }
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,13 @@
+﻿@model IEnumerable<ETicaret.Models.OzellikDeger>
+
+<div class="form-group">
+    <label class="col-lg-2 control-label">Ürün Değer</label>
+    <div class="col-lg-10">
+        <select class="form-control input-lg m-bot15" name="OzellikDegerId">
+            @foreach (var item in Model)
+            {
+                <option value="@item.Id">@item.Adi</option>
+            }
+        </select>
+    </div>
+</div>

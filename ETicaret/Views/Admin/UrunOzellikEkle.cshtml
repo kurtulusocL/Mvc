@@ -1,0 +1,73 @@
+﻿@model IEnumerable<ETicaret.Models.Urun>
+@{
+    ViewBag.Title = "Ürün Özellik Ekle";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section Head{
+    <script src="~/Content/Admin/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function fonksiyon() {
+            $("#urun").change(function myFunction() {
+                //var id = $(this).val();
+                //var kId = id.split('-')[1];
+                var kId = $(this).find("option:selected").attr("title");
+
+                $.ajax({
+                    type: "GET",
+                    url: "/Admin/UrunOzellikTipWidget",
+                    data: { katId: kId },
+                    success: function myfunction(veri) {
+                        $("#tip").html('');
+                        $("#tip").html(veri);
+                    },
+                    error: function () {
+                        alert("hata");
+                    },
+                })
+            });
+        });
+    </script>
+}
+
+<section id="main-content">
+    <section class="wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <section class="panel">
+                    <header class="panel-heading">
+                        @ViewBag.Title
+                    </header>
+                    <div class="panel-body">
+                        <form role="form" action="~/Admin/UrunOzellikEkle" method="post" class="form-horizontal tasi-form">
+                            @Html.AntiForgeryToken()
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">Ürün</label>
+                                <div class="col-lg-10">
+                                    <select id="urun" class="form-control input-lg m-bot15" name="UrunId">
+                                        @foreach (var item in Model)
+                                        {
+                                            <option value="@item.Id" title="@item.KategoriId">@item.Adi</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div id="tip"></div>
+                            <div id="deger"></div>
+                            @{
+                                    Html.RenderAction("UrunOzellikTipWidget", "Admin");
+                                    Html.RenderAction("UrunOzellikDegerWidget", "Admin");
+                                }
+                            <div class="form-group">
+                                <div class="col-lg-offset-2 col-lg-10">
+                                    <button class="btn btn-danger" type="submit">Kaydet</button>
+                                    <button class="btn btn-default" type="button">İptal Et</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </section>
+</section>

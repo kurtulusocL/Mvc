@@ -1,0 +1,80 @@
+﻿@using PagedList
+@using PagedList.Mvc
+@model IPagedList<ETicaret.Models.Urun>
+@{
+    ViewBag.Title = "Ürünler";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<section id="main-content">
+    <section class="wrapper">
+        <section class="panel">
+            <header class="panel-heading">
+                @ViewBag.Tİtle
+            </header>
+            <div class="panel-body">
+                <div class="adv-table editable-table ">
+                    <div class="clearfix">
+                        <div class="btn-group">
+                            <a href="~/Admin/UrunEkle" target="_blank" class="btn btn-primary">
+                                Yeni Ürün Ekle <i class="icon-plus"></i>
+                            </a>
+                            <hr />
+                        </div>
+                    </div>
+                    <div class="space15"></div>
+                    <table class="table table-striped table-hover table-bordered" id="editable-sample">
+                        <thead>
+                            <tr>
+                                <th>Adı</th>
+                                <th>Açıklaması</th>
+                                <th>Alış Fiyatı</th>
+                                <th>Son Kullanma Tarihi</th>
+                                <th>Satış Fiyatı</th>
+                                <th>Kategorisi</th>
+                                <th>Markası</th>
+                                <th>Resim Sayısı</th>
+                                <th>Eklenme Tarihi</th>
+                                <th>Güncellenme Tarihi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr class="">
+                                    <td>@item.Adi</td>
+                                    <td>@item.Aciklama</td>
+                                    <td>@item.AlisFiyat</td>
+                                    <td class="center">@item.SonKullanmaTarih.ToShortDateString()</td>
+                                    <td class="center">@item.SatisFiyat</td>
+                                    <td class="center">@item.Kategori.Adi</td>
+                                    <td class="center">@item.Marka.Adi</td>
+                                    <td>@item.Resims.Count()</td>
+                                    <td class="center">@item.CreatedDate.ToShortDateString()</td>
+                                    <td>
+                                        @if (item.UpdatedDate != null)
+                                        {
+                                            @item.UpdatedDate.Value.ToShortDateString();
+                                        }
+                                        else
+                                        {
+                                            <span>Henüz güncellenme yok</span>
+                                        }
+                                    </td>
+                                    <td><a class="btn btn-success btn-xs" href="~/Admin/UrunDuzenle/@item.Id">Düzenle</a></td>
+                                    <td><a class="btn btn-danger btn-xs" href="~/Admin/UrunSil/@item.Id">Sil</a></td>
+                                    <td><a class="btn btn-info btn-xs" href="~/Admin/UrunResimEkle/@item.Id">Resim Ekle</a></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        <div class="page-header">
+            <div class="paginate_button">
+                @Html.PagedListPager(Model, Page => Url.Action("Urunler", new { Page }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+            </div>
+        </div>
+    </section>
+</section>

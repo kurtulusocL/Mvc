@@ -1,0 +1,70 @@
+﻿@using PagedList
+@using PagedList.Mvc
+@model IPagedList<ETicaret.Models.OzellikTip>
+@{
+    ViewBag.Title = "Ozellik Tipleri";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<section id="main-content">
+    <section class="wrapper">
+        <section class="panel">
+            <header class="panel-heading">
+                @ViewBag.Tİtle
+            </header>
+            <div class="panel-body">
+                <div class="adv-table editable-table ">
+                    <div class="clearfix">
+                        <div class="btn-group">
+                            <a href="~/Admin/OzellikTipEkle" target="_blank" class="btn btn-primary">
+                                Yeni Özellik Ekle <i class="icon-plus"></i>
+                            </a>
+                            <hr />
+                        </div>
+                    </div>
+                    <div class="space15"></div>
+                    <table class="table table-striped table-hover table-bordered" id="editable-sample">
+                        <thead>
+                            <tr>
+                                <th>Adı</th>
+                                <th>Açıklaması</th>
+                                <th>Kategorisi</th>
+                                <th>Eklenme Tarihi</th>
+                                <th>Güncellenme Tarihi</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr class="">
+                                    <td>@item.Adi</td>
+                                    <td>@item.Aciklama</td>
+                                    <td>@item.Kategori.Adi</td>
+                                    <td class="center">@item.CreatedDate.ToShortDateString()</td>
+                                    <td>
+                                        @if (item.UpdatedDate != null)
+                                        {
+                                            @item.UpdatedDate.Value.ToShortDateString();
+                                        }
+                                        else
+                                        {
+                                            <span>Henüz güncellenme yok</span>
+                                        }
+                                    </td>
+                                    <td><a class="btn btn-success btn-xs" href="~/Admin/OzellikDuzenle/@item.Id">Düzenle</a></td>
+                                    <td><a class="btn btn-danger btn-xs" href="~/Admin/OzellikSil/@item.Id">Sil</a></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        <div class="page-header">
+            <div class="paginate_button">
+                @Html.PagedListPager(Model, Page => Url.Action("OzellikTipleri", new { Page }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+            </div>
+        </div>
+    </section>
+</section>

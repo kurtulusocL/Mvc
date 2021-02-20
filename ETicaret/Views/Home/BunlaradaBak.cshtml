@@ -1,0 +1,53 @@
+﻿@model IEnumerable<ETicaret.Models.Urun>
+@{
+    Layout = null;
+}
+
+<script src="~/Content/Admin/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function myFunction() {
+        $(".sepeteAt").click(function myFunction() {
+            var uid = $(this).attr("name");
+            $.ajax({
+                type: "GET",
+                url: "/Home/SepeteEkle",
+                data: { id: uid },
+                success: function myFunction() {
+                    //alert("Ürün sepete eklenmiştir");
+                    $.ajax({
+                        type: "GET",
+                        url: "/Home/MiniSepetWidget",
+                        success: function VeriGetir(veri) {
+                            $(".cart-all").html('');
+                            $(".cart-all").html(veri);
+                            alert("Ürün sepete eklendi");
+                        }
+                    });
+                },
+                error: function myFunction() {
+                    alert("ürünü ekleyemedik. lütfen sayfayı yenileyip tekrar dener misiniz?");
+                },
+            });
+        });
+    });
+</script>
+
+@foreach (var item in Model)
+{
+    <div class="col-md-3 col-xs-6">
+        <div class="product">
+            <div class="product-cover">
+                <div class="product-cover-hover"><span><a href="~/Home/UrunDetay/@item.Id">Bak</a></span></div>
+                <img src="~/Content/Zeon/images/photos/recommand-4.jpg" alt="product name" />
+            </div>
+            <div class="product-details">
+                <h1><a href~/Home/UrunDetay/@item.Id">@item.Adi</a></h1>
+                <p>@item.Aciklama</p>
+                <div class="product-price">
+                    <i class="icon-257" title="add to cart"></i>
+                    $135
+                </div>
+            </div>
+        </div>
+    </div>
+}

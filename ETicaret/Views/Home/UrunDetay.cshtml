@@ -1,0 +1,160 @@
+﻿@model ETicaret.Models.Urun
+@{
+    ViewBag.Title = @Model.Adi + " - Ürün Detay Bilgileri";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Content/Admin/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function myFunction() {
+        $(".sepeteAt").click(function myFunction() {
+            var uid = $(this).attr("name");
+            $.ajax({
+                type: "GET",
+                url: "/Home/SepeteEkle",
+                data: { id: uid },
+                success: function myFunction() {
+                    //alert("Ürün sepete eklenmiştir");
+                    $.ajax({
+                        type: "GET",
+                        url: "/Home/MiniSepetWidget",
+                        success: function VeriGetir(veri) {
+                            $(".cart-all").html('');
+                            $(".cart-all").html(veri);
+                            alert("Ürün sepete eklendi");
+                        }
+                    });
+                },
+                error: function myFunction() {
+                    alert("ürünü ekleyemedik. lütfen sayfayı yenileyip tekrar dener misiniz?");
+                },
+            });
+        });
+    });
+</script>
+
+<div class="content">
+    <div class="product-one">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="the-slider product-big-image" data-tesla-plugin="slider" data-tesla-item=".slide" data-tesla-next=".product-image-arrows-right" data-tesla-prev=".product-image-arrows-left" data-tesla-container=".slide-wrapper">
+                        <ul class="product-image-arrows">
+                            <li class="product-image-arrows-left"><i class="icon-517" title="left"></i></li>
+                            <li class="product-image-arrows-right"><i class="icon-501" title="right"></i></li>
+                        </ul>
+                        <ul class="slide-wrapper">
+                            <li class="slide"><img src="~/Content/Zeon/images/photos/product-one-1.jpg" alt="product image" /></li>
+                            <li class="slide"><img src="~/Content/Zeon/images/photos/product-one-2.jpg" alt="product image" /></li>
+                            <li class="slide"><img src="~/Content/Zeon/images/photos/product-one-3.jpg" alt="product image" /></li>
+                            <li class="slide"><img src="~/Content/Zeon/images/photos/product-one-4.jpg" alt="product image" /></li>
+                            <li class="slide"><img src="~/Content/Zeon/images/photos/product-one-1.jpg" alt="product image" /></li>
+                            <li class="slide"><img src="~/Content/Zeon/images/photos/product-one-2.jpg" alt="product image" /></li>
+                        </ul>
+                        <div class="row">
+                            <ul class="the-bullets-dots" data-tesla-plugin="bullets">
+                                <li><div class="col-md-2 col-xs-2"><img src="~/Content/Zeon/images/photos/product-one-1.jpg" alt="product image" /></div></li>
+                                <li><div class="col-md-2 col-xs-2"><img src="~/Content/Zeon/images/photos/product-one-2.jpg" alt="product image" /></div></li>
+                                <li><div class="col-md-2 col-xs-2"><img src="~/Content/Zeon/images/photos/product-one-3.jpg" alt="product image" /></div></li>
+                                <li><div class="col-md-2 col-xs-2"><img src="~/Content/Zeon/images/photos/product-one-4.jpg" alt="product image" /></div></li>
+                                <li><div class="col-md-2 col-xs-2"><img src="~/Content/Zeon/images/photos/product-one-1.jpg" alt="product image" /></div></li>
+                                <li><div class="col-md-2 col-xs-2"><img src="~/Content/Zeon/images/photos/product-one-2.jpg" alt="product image" /></div></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <h2>@Model.Adi</h2>
+
+                    @foreach (var item in ViewBag.OzellikTipler)
+                    {
+                        <div class="sort-dropdown">
+                            <span>@item.Key <i class="icon-515" title="515"></i></span>
+                            <ul>
+                                @foreach (var item2 in item.Value)
+                                {
+                                    <li><a href="#">@item2.Adi</a></li>
+                                }
+                            </ul>
+                        </div>
+                    }
+
+                    <div class="clear"></div>
+                    <div class="quantity">
+                        <input type="button" value="-" class="minus">
+                        <input type="number" step="1" min="1" name="quantity" value="1" title="Qty" class="input-text qty text">
+                        <input type="button" value="+" class="plus">
+                        <span>10 sold / 12 available</span>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="product-price">PRICE : @Model.SatisFiyat.ToString("C2")</div>
+                        </div>
+                        <div class="col-md-6">
+                            <a href="" class="button-2 sepeteAt" name="@Model.Id">add to shopping bag</a>
+                            <a href="#" class="button-3">add to wishlist</a>
+                        </div>
+                    </div>
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#description" data-toggle="tab">Description</a></li>
+                        <li class=""><a href="#reviews" data-toggle="tab">Reviews</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="description">
+                            <p>@Model.Aciklama</p>
+                            <ul class="product-details">
+                                <li>@Model.Kategori.Adi</li>
+                                <li>@Model.Marka.Adi</li>
+                                <li>@Model.SatisFiyat.ToString("C2")</li>
+                                <li>@Model.SonKullanmaTarih.ToShortDateString()</li>
+                                <li>tags - <a href="#">dress</a>, <a href="#">red</a>, <a href="#">woman</a></li>
+                            </ul>
+                            <ul class="social-share">
+                                <li><span>Share</span></li>
+                                <li><a href="#"><i class="icon-160" title="161"></i></a></li>
+                                <li><a href="#"><i class="icon-138" title="161"></i></a></li>
+                                <li><a href="#"><i class="icon-106" title="161"></i></a></li>
+                                <li><a href="#"><i class="icon-169" title="161"></i></a></li>
+                                <li><a href="#"><i class="icon-163" title="161"></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="tab-pane" id="reviews">
+                            <div class="product-review">
+                                <div class="product-review-avatar">
+                                    <img src="~/Content/Zeon/images/elements/testimonial-avatar.jpg" alt="avatar" />
+                                </div>
+                                <div class="product-review-author">Jane Doe <span>12 Jan</span></div>
+                                <p>I like the item very much, it is so on my size and it looks great.</p>
+                            </div>
+                            <div class="product-review">
+                                <div class="product-review-avatar">
+                                    <img src="~/Content/Zeon/images/elements/testimonial-avatar.jpg" alt="avatar" />
+                                </div>
+                                <div class="product-review-author">Jane Doe <span>10 Jan</span></div>
+                                <p>It is so on my size, i like the item very much, it is so on my size and it looks great i like it a lot It is so on my size, i like the item very much, it is so on my size and it looks great.</p>
+                            </div>
+                            <a href="#" class="button-6" data-toggle="modal" data-target="#write-review">Write a review</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="tesla-carousel" data-tesla-plugin="carousel" data-tesla-container=".tesla-carousel-items" data-tesla-item=">div" data-tesla-autoplay="false" data-tesla-rotate="false">
+            <div class="site-title">
+                <ul class="wrapper-arrows">
+                    <li><i class="icon-517 prev" title="left arrow"></i></li>
+                    <li><i class="icon-501 next" title="right arrow"></i></li>
+                </ul>
+                <div class="site-inside"><span>Bunlara da Bakabilirsiniz</span></div>
+            </div>
+            <div class="row">
+                <div class="tesla-carousel-items">
+                    @Html.Action("BunlaradaBak", "Home")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,30 @@
+﻿@model IEnumerable<ETicaret.Models.OzellikTip>
+
+
+<script src="~/Content/Admin/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript">
+    $("#tipler").change(function myFunction() {
+        var id = $(this).val();
+        $.ajax({
+            type: "GET",
+            url: "/Admin/UrunOzellikDegerWidget",
+            data: { tipId: id },
+            success: function myFunction(veri) {
+                $("#deger").html('');
+                $("#deger").append(veri);
+            },
+        });
+    });
+</script>
+
+<div class="form-group">
+    <label class="col-lg-2 control-label">Özellik Tip</label>
+    <div class="col-lg-10">
+        <select class="form-control input-lg m-bot15" name="OzellikTipId" id="tipler">
+            @foreach (var item in Model)
+            {
+                <option value="@item.Id">@item.Adi</option>
+            }
+        </select>
+    </div>
+</div>
